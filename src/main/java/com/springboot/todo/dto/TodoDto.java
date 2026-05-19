@@ -4,6 +4,6 @@ public record TodoDto(
         Long id,
         String title,
         String description,
-        boolean done
+        Boolean done
 ) {
 }

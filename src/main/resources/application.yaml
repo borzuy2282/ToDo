@@ -16,3 +16,12 @@ spring:
       name: ${DEFAULT_USER_USERNAME}
       password: ${DEFAULT_USER_PASSWORD}
       roles: ADMIN, USER
+
+app:
+  security:
+    default:
+      name: ${DEFAULT_USER_USERNAME}
+      password: ${DEFAULT_USER_PASSWORD}
+    admin:
+      name: ${ADMIN_USERNAME}
+      password: ${ADMIN_PASSWORD}

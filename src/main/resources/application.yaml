@@ -11,4 +11,8 @@ spring:
     url: ${DATABASE_URL}
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
-
+  security:
+    user:
+      name: ${DEFAULT_USER_USERNAME}
+      password: ${DEFAULT_USER_PASSWORD}
+      roles: ADMIN, USER

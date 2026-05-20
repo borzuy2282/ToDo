@@ -50,4 +50,8 @@ public class TodoService {
         Todo updatedTodo = todoRepository.save(todo);
         return todoMapper.toDto(updatedTodo);
     }
+
+    public void deleteTodo(Long id){
+        todoRepository.deleteById(id);
+    }
 }

@@ -7,6 +7,7 @@ import com.springboot.todo.exception.ResourceNotFoundException;
 import com.springboot.todo.service.TodoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,6 +50,12 @@ public class TodoController {
     public ResponseEntity<TodoDto> updateTodo(@PathVariable Long id,
                                               @RequestBody TodoDto todoDto){
         return ResponseEntity.ok(todoService.updateTodo(id, todoDto));
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deleteTodo(@PathVariable Long id){
+        todoService.deleteTodo(id);
+        return ResponseEntity.noContent().build();
     }
 
 

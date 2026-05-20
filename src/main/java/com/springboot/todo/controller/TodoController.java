@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,6 +43,12 @@ public class TodoController {
     @GetMapping
     public ResponseEntity<List<TodoDto>> getAllTodos(){
         return ResponseEntity.ok(todoService.getAllTodos());
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<TodoDto> updateTodo(@PathVariable Long id,
+                                              @RequestBody TodoDto todoDto){
+        return ResponseEntity.ok(todoService.updateTodo(id, todoDto));
     }
 
 

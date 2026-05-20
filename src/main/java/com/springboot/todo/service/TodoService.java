@@ -41,4 +41,13 @@ public class TodoService {
                 .map(todoMapper::toDto)
                 .toList();
     }
+
+    public TodoDto updateTodo(Long id, TodoDto todoDto){
+        Todo todo = todoRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Todo with id " + id + " was not found"));
+        if (todoDto.title() != null) todo.setTitle(todoDto.title());
+        if (todoDto.description() != null) todo.setDescription(todoDto.description());
+        Todo updatedTodo = todoRepository.save(todo);
+        return todoMapper.toDto(updatedTodo);
+    }
 }

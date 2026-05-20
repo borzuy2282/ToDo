@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
@@ -16,6 +17,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@EnableMethodSecurity
 public class SpringSecurityConfig {
 
     @Value("${app.security.default.name}")
@@ -33,11 +35,11 @@ public class SpringSecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize) -> {
-                        authorize.requestMatchers(HttpMethod.POST, "/api/v1/**").hasRole("ADMIN");
-                        authorize.requestMatchers(HttpMethod.PUT, "/api/v1/**").hasRole("ADMIN");
-                        authorize.requestMatchers(HttpMethod.DELETE, "/api/v1/**").hasRole("ADMIN");
-                        authorize.requestMatchers(HttpMethod.GET, "/api/v1/**").hasAnyRole("ADMIN", "USER");
-                        authorize.requestMatchers(HttpMethod.PATCH, "/api/v1/**").hasAnyRole("ADMIN", "USER");
+//                        authorize.requestMatchers(HttpMethod.POST, "/api/v1/**").hasRole("ADMIN");
+//                        authorize.requestMatchers(HttpMethod.PUT, "/api/v1/**").hasRole("ADMIN");
+//                        authorize.requestMatchers(HttpMethod.DELETE, "/api/v1/**").hasRole("ADMIN");
+//                        authorize.requestMatchers(HttpMethod.GET, "/api/v1/**").hasAnyRole("ADMIN", "USER");
+//                        authorize.requestMatchers(HttpMethod.PATCH, "/api/v1/**").hasAnyRole("ADMIN", "USER");
                         authorize.anyRequest().authenticated();
                         })
         .httpBasic(Customizer.withDefaults());

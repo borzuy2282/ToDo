@@ -7,6 +7,7 @@ import com.springboot.todo.exception.ResourceNotFoundException;
 import com.springboot.todo.service.TodoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,38 +33,43 @@ public class TodoController {
         this.todoService = todoService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("create")
     public ResponseEntity<TodoDto> createTodo(@RequestBody TodoDto todoDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(todoService.createTodo(todoDto));
     }
-
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("{id}")
     public ResponseEntity<TodoDto> getTodo(@PathVariable Long id){
         return ResponseEntity.ok(todoService.getTodo(id));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping
     public ResponseEntity<List<TodoDto>> getAllTodos(){
         return ResponseEntity.ok(todoService.getAllTodos());
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("{id}")
     public ResponseEntity<TodoDto> updateTodo(@PathVariable Long id,
                                               @RequestBody TodoDto todoDto){
         return ResponseEntity.ok(todoService.updateTodo(id, todoDto));
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteTodo(@PathVariable Long id){
         todoService.deleteTodo(id);
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @PatchMapping("{id}/done")
     public ResponseEntity<TodoDto> doneTodo(@PathVariable Long id){
         return ResponseEntity.ok(todoService.updateDoneTodo(id, Boolean.TRUE));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @PatchMapping("{id}/undone")
     public ResponseEntity<TodoDto> undoneTodo(@PathVariable Long id){
         return ResponseEntity.ok(todoService.updateDoneTodo(id, Boolean.FALSE));

@@ -2,8 +2,8 @@ package com.springboot.todo.service;
 
 import com.springboot.todo.dto.TodoDto;
 import com.springboot.todo.entity.Todo;
-import com.springboot.todo.exception.TodoIncorrectFormatException;
-import com.springboot.todo.exception.TodoNotFoundException;
+import com.springboot.todo.exception.ResourceIncorrectFormatException;
+import com.springboot.todo.exception.ResourceNotFoundException;
 import com.springboot.todo.mapper.TodoMapper;
 import com.springboot.todo.repository.TodoRepository;
 import org.springframework.stereotype.Service;
@@ -19,16 +19,16 @@ public class TodoService {
     }
 
     public TodoDto createTodo(TodoDto todoDto){
-        if (todoDto.title() == null) throw new TodoIncorrectFormatException("Title is mandatory!");
+        if (todoDto.title() == null) throw new ResourceIncorrectFormatException("Title is mandatory to create todo!");
         Todo todo = todoMapper.toEntity(todoDto);
         todo.setDone(false);
         Todo savedTodo = todoRepository.save(todo);
         return todoMapper.toDto(savedTodo);
     }
 
-    public TodoDto getTodo(Long id){
+    public TodoDto getTodo(Long id) {
         Todo todo = todoRepository.findById(id).orElseThrow(()
-                -> new TodoNotFoundException("Todo with id " + id + " was not found"));
+                -> new ResourceNotFoundException("Todo with id " + id + " was not found"));
         return todoMapper.toDto(todo);
     }
 }

@@ -2,8 +2,8 @@ package com.springboot.todo.controller;
 
 import com.springboot.todo.dto.TodoDto;
 import com.springboot.todo.exception.ErrorDetails;
-import com.springboot.todo.exception.TodoIncorrectFormatException;
-import com.springboot.todo.exception.TodoNotFoundException;
+import com.springboot.todo.exception.ResourceIncorrectFormatException;
+import com.springboot.todo.exception.ResourceNotFoundException;
 import com.springboot.todo.service.TodoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,26 +38,26 @@ public class TodoController {
         return ResponseEntity.ok(todoService.getTodo(id));
     }
 
-    @ExceptionHandler(TodoNotFoundException.class)
-    public ResponseEntity<ErrorDetails> todoNotFoundExceptionHandler(TodoNotFoundException ex,
-                                                                            WebRequest webRequest){
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorDetails> todoNotFoundExceptionHandler(ResourceNotFoundException ex,
+                                                                     WebRequest webRequest){
         ErrorDetails errorDetails = new ErrorDetails(
                 LocalDateTime.now(),
                 ex.getMessage(),
                 webRequest.getDescription(false),
-                "TODO_NOT_FOUND"
+                "RESOURCE_NOT_FOUND"
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDetails);
     }
 
-    @ExceptionHandler(TodoIncorrectFormatException.class)
-    public ResponseEntity<ErrorDetails> todoIncorrectFormatExceptionHandler(TodoIncorrectFormatException ex,
+    @ExceptionHandler(ResourceIncorrectFormatException.class)
+    public ResponseEntity<ErrorDetails> todoIncorrectFormatExceptionHandler(ResourceIncorrectFormatException ex,
                                                                             WebRequest webRequest){
         ErrorDetails errorDetails = new ErrorDetails(
                 LocalDateTime.now(),
                 ex.getMessage(),
                 webRequest.getDescription(false),
-                "TODO_INCORRECT_FORMAT"
+                "RESOURCE_INCORRECT_FORMAT"
         );
         return ResponseEntity.badRequest().body(errorDetails);
     }

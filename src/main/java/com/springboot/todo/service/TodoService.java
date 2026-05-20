@@ -23,7 +23,7 @@ public class TodoService {
     public TodoDto createTodo(TodoDto todoDto){
         if (todoDto.title() == null) throw new ResourceIncorrectFormatException("Title is mandatory to create todo!");
         Todo todo = todoMapper.toEntity(todoDto);
-        todo.setDone(false);
+        todo.setDone(Boolean.FALSE);
         Todo savedTodo = todoRepository.save(todo);
         return todoMapper.toDto(savedTodo);
     }
@@ -53,6 +53,12 @@ public class TodoService {
         todoRepository.deleteById(id);
     }
 
+    public TodoDto updateDoneTodo(Long id, Boolean flag){
+        Todo todo = findTodoById(id);
+        todo.setDone(flag);
+        Todo updatedDto = todoRepository.save(todo);
+        return todoMapper.toDto(updatedDto);
+    }
 
     private Todo findTodoById(Long id){
         return todoRepository.findById(id).orElseThrow(()

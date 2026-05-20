@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -56,6 +57,16 @@ public class TodoController {
     public ResponseEntity<?> deleteTodo(@PathVariable Long id){
         todoService.deleteTodo(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("{id}/done")
+    public ResponseEntity<TodoDto> doneTodo(@PathVariable Long id){
+        return ResponseEntity.ok(todoService.updateDoneTodo(id, Boolean.TRUE));
+    }
+
+    @PatchMapping("{id}/undone")
+    public ResponseEntity<TodoDto> undoneTodo(@PathVariable Long id){
+        return ResponseEntity.ok(todoService.updateDoneTodo(id, Boolean.FALSE));
     }
 
 

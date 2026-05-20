@@ -8,6 +8,8 @@ import com.springboot.todo.mapper.TodoMapper;
 import com.springboot.todo.repository.TodoRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TodoService {
     private final TodoMapper todoMapper;
@@ -30,5 +32,13 @@ public class TodoService {
         Todo todo = todoRepository.findById(id).orElseThrow(()
                 -> new ResourceNotFoundException("Todo with id " + id + " was not found"));
         return todoMapper.toDto(todo);
+    }
+
+    public List<TodoDto> getAllTodos(){
+        return todoRepository
+                .findAll()
+                .stream()
+                .map(todoMapper::toDto)
+                .toList();
     }
 }

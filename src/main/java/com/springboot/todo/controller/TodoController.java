@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/todo")
@@ -37,6 +38,12 @@ public class TodoController {
     public ResponseEntity<TodoDto> getTodo(@PathVariable Long id){
         return ResponseEntity.ok(todoService.getTodo(id));
     }
+
+    @GetMapping
+    public ResponseEntity<List<TodoDto>> getAllTodos(){
+        return ResponseEntity.ok(todoService.getAllTodos());
+    }
+
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorDetails> todoNotFoundExceptionHandler(ResourceNotFoundException ex,

@@ -29,8 +29,7 @@ public class TodoService {
     }
 
     public TodoDto getTodo(Long id) {
-        Todo todo = todoRepository.findById(id).orElseThrow(()
-                -> new ResourceNotFoundException("Todo with id " + id + " was not found"));
+        Todo todo = findTodoById(id);
         return todoMapper.toDto(todo);
     }
 
@@ -43,8 +42,7 @@ public class TodoService {
     }
 
     public TodoDto updateTodo(Long id, TodoDto todoDto){
-        Todo todo = todoRepository.findById(id).orElseThrow(()
-                -> new ResourceNotFoundException("Todo with id " + id + " was not found"));
+        Todo todo = findTodoById(id);
         if (todoDto.title() != null) todo.setTitle(todoDto.title());
         if (todoDto.description() != null) todo.setDescription(todoDto.description());
         Todo updatedTodo = todoRepository.save(todo);
@@ -53,5 +51,11 @@ public class TodoService {
 
     public void deleteTodo(Long id){
         todoRepository.deleteById(id);
+    }
+
+
+    private Todo findTodoById(Long id){
+        return todoRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Todo with id " + id + " was not found"));
     }
 }

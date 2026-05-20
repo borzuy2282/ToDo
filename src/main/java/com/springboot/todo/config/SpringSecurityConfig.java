@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -20,14 +22,20 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class SpringSecurityConfig {
 
-    @Value("${app.security.default.name}")
-    private String defaultUsername;
-    @Value("${app.security.default.password}")
-    private String defaultPassword;
-    @Value("${app.security.admin.name}")
-    private String adminUsername;
-    @Value("${app.security.admin.password}")
-    private String adminPassword;
+    private UserDetailsService userDetailsService;
+
+    public SpringSecurityConfig(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
+
+//    @Value("${app.security.default.name}")
+//    private String defaultUsername;
+//    @Value("${app.security.default.password}")
+//    private String defaultPassword;
+//    @Value("${app.security.admin.name}")
+//    private String adminUsername;
+//    @Value("${app.security.admin.password}")
+//    private String adminPassword;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) {
@@ -47,22 +55,26 @@ public class SpringSecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public UserDetailsService userDetailsService(){
-        UserDetails defaultUser = User.builder()
-                .username(defaultUsername)
-                .password(passwordEncoder().encode(defaultPassword))
-                .roles("USER")
-                .build();
-
-        UserDetails admin = User.builder()
-                .username(adminUsername)
-                .password(passwordEncoder().encode(adminPassword))
-                .roles("ADMIN")
-                .build();
-
-        return new InMemoryUserDetailsManager(defaultUser, admin);
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration){
+        return configuration.getAuthenticationManager();
     }
+
+//    @Bean
+//    public UserDetailsService userDetailsService(){
+//        UserDetails defaultUser = User.builder()
+//                .username(defaultUsername)
+//                .password(passwordEncoder().encode(defaultPassword))
+//                .roles("USER")
+//                .build();
+//
+//        UserDetails admin = User.builder()
+//                .username(adminUsername)
+//                .password(passwordEncoder().encode(adminPassword))
+//                .roles("ADMIN")
+//                .build();
+//
+//        return new InMemoryUserDetailsManager(defaultUser, admin);
+//    }
 
     @Bean
     PasswordEncoder passwordEncoder(){

@@ -74,29 +74,4 @@ public class TodoController {
     public ResponseEntity<TodoDto> undoneTodo(@PathVariable Long id){
         return ResponseEntity.ok(todoService.updateDoneTodo(id, Boolean.FALSE));
     }
-
-
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorDetails> resourceNotFoundExceptionHandler(ResourceNotFoundException ex,
-                                                                     WebRequest webRequest){
-        ErrorDetails errorDetails = new ErrorDetails(
-                LocalDateTime.now(),
-                ex.getMessage(),
-                webRequest.getDescription(false),
-                "RESOURCE_NOT_FOUND"
-        );
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDetails);
-    }
-
-    @ExceptionHandler(ResourceIncorrectFormatException.class)
-    public ResponseEntity<ErrorDetails> resourceIncorrectFormatExceptionHandler(ResourceIncorrectFormatException ex,
-                                                                            WebRequest webRequest){
-        ErrorDetails errorDetails = new ErrorDetails(
-                LocalDateTime.now(),
-                ex.getMessage(),
-                webRequest.getDescription(false),
-                "RESOURCE_INCORRECT_FORMAT"
-        );
-        return ResponseEntity.badRequest().body(errorDetails);
-    }
 }

@@ -46,7 +46,7 @@ public class TodoController {
 
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorDetails> todoNotFoundExceptionHandler(ResourceNotFoundException ex,
+    public ResponseEntity<ErrorDetails> resourceNotFoundExceptionHandler(ResourceNotFoundException ex,
                                                                      WebRequest webRequest){
         ErrorDetails errorDetails = new ErrorDetails(
                 LocalDateTime.now(),
@@ -58,7 +58,7 @@ public class TodoController {
     }
 
     @ExceptionHandler(ResourceIncorrectFormatException.class)
-    public ResponseEntity<ErrorDetails> todoIncorrectFormatExceptionHandler(ResourceIncorrectFormatException ex,
+    public ResponseEntity<ErrorDetails> resourceIncorrectFormatExceptionHandler(ResourceIncorrectFormatException ex,
                                                                             WebRequest webRequest){
         ErrorDetails errorDetails = new ErrorDetails(
                 LocalDateTime.now(),

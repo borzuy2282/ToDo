@@ -8,6 +8,7 @@ import com.springboot.todo.exception.DuplicateResourceException;
 import com.springboot.todo.exception.ResourceApiException;
 import com.springboot.todo.repository.RoleRepository;
 import com.springboot.todo.repository.UserRepository;
+import com.springboot.todo.security.JwtTokenProvider;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,12 +25,14 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
     private final AuthenticationManager authenticationManager;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, AuthenticationManager authenticationManager) {
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
         this.authenticationManager = authenticationManager;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     public String register(RegisterDto registerDto){
@@ -62,6 +65,6 @@ public class AuthService {
         ));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return "User logged-in successfully!";
+        return jwtTokenProvider.generateToken(authentication);
     }
 }

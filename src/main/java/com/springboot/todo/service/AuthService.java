@@ -1,5 +1,6 @@
 package com.springboot.todo.service;
 
+import com.springboot.todo.dto.LoginDto;
 import com.springboot.todo.dto.RegisterDto;
 import com.springboot.todo.entity.Role;
 import com.springboot.todo.entity.User;
@@ -7,6 +8,10 @@ import com.springboot.todo.exception.DuplicateResourceException;
 import com.springboot.todo.exception.ResourceApiException;
 import com.springboot.todo.repository.RoleRepository;
 import com.springboot.todo.repository.UserRepository;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +23,13 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final AuthenticationManager authenticationManager;
 
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
+        this.authenticationManager = authenticationManager;
     }
 
     public String register(RegisterDto registerDto){
@@ -43,5 +50,18 @@ public class AuthService {
         userRepository.save(user);
 
         return "User registered successfully!";
+    }
+
+    public String login(LoginDto loginDto){
+        if (loginDto.usernameOrEmail() == null || loginDto.password() == null){
+            throw new ResourceApiException("Bad data was provided!");
+        }
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                loginDto.usernameOrEmail(),
+                loginDto.password()
+        ));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        return "User logged-in successfully!";
     }
 }

@@ -56,6 +56,7 @@ public class SpringSecurityConfig {
         return http.build();
     }
 
+    @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration){
         return configuration.getAuthenticationManager();
     }
